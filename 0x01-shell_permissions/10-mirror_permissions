@@ -1,2 +1,2 @@
 #!/bin/bash
-chmod uo-x,g+r,o+r hello 
+chmod "$(stat -c ' %a' "$olleh")" hello 
