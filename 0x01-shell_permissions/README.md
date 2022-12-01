@@ -1,0 +1,2 @@
+permission shell scripts folder
+
