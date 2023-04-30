@@ -5,7 +5,7 @@ while [ $k -le 10 ]
 do
     if [ $k == 4 ]
     then
-	    echo "bas luck"
+	    echo "bad luck"
     elif [ $k == 9 ]
     then
 	    echo "good luck"
