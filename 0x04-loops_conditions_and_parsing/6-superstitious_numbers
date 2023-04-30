@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# This script displays Best School 10 times using a while loop
+k=1
+while [ $k -le 20 ]
+do
+    echo "$k"
+    if [ $k == 4 ]
+    then
+	    echo "bad luck from China"
+    elif [ $k == 9 ]
+    then
+	    echo "bad luck form Japan"
+    elif [ $k == 17 ]
+    then
+	    echo "bad luck from Italy"
+    fi
+    k=$(( k + 1 ))
+done
