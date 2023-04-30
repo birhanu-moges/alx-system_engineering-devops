@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 # Bash script that displays Best School 10 times.
 
-for i in $(seq 1 1 10)
+for i in $(seq 1 10)
 do
-    echo "Holberton School"
+    echo "Best school"
     i=$(( i + 1 ))
 done
