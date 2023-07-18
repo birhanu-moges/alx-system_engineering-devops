@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
-# Run Nginx as the "nginx" user.
-# Edit the config file
-chmod 644 /etc/nginx/nginx.conf
-sed -i '1c\user nginx;' /etc/nginx/nginx.conf
-sed -i '21c\\tlisten 8080 default_server;' /etc/nginx/sites-available/default
-sed -i '22c\\tlisten [::]:8080 default_server;' /etc/nginx/sites-available/default
-# Start Nginx and stop Apache
+# A Bash script that runs nginx as user listening on all active IPs on port 8080 instead of port 80
 pkill apache2
-sudo -H -u nginx bash -c "service nginx start"
+chmod -R 777 /etc/nginx/
+sed -i "s/#user www-data/user nginx/" /etc/nginx/nginx.conf
+sed -i 's/80/8080/g' /etc/nginx/sites-available/default
+sudo -u nginx nginx -c /etc/nginx/nginx.conf
