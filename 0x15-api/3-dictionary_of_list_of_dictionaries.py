@@ -1,39 +1,26 @@
 #!/usr/bin/python3
-
-"""
-Python script that exports data in the JSON format.
-"""
-
-from requests import get
+"""Export to csv the information about user TODO list progress"""
 import json
+import requests
+
 
 if __name__ == "__main__":
-    response = get('https://jsonplaceholder.typicode.com/todos/')
-    data = response.json()
+    url = "https://jsonplaceholder.typicode.com/"
+    uri_user = "users"
+    uri_todos = "todos"
 
-    row = []
-    response2 = get('https://jsonplaceholder.typicode.com/users')
-    data2 = response2.json()
+    users = requests.get(url + uri_user).json()
+    dir_user_tasks = {}
 
-    new_dict1 = {}
+    for user in users:
+        user_id = user.get("id")
+        user_name = user.get("username")
+        tasks = requests.get(url + uri_todos,
+                             params={"userId": user_id}).json()
+        user_tasks = ({user_id: [{"task": task.get("title"),
+                                  "completed": task.get("completed"),
+                                  "username": user_name} for task in tasks]})
+        dir_user_tasks.update(user_tasks)
 
-    for j in data2:
-
-        row = []
-        for i in data:
-
-            new_dict2 = {}
-
-            if j['id'] == i['userId']:
-
-                new_dict2['username'] = j['username']
-                new_dict2['task'] = i['title']
-                new_dict2['completed'] = i['completed']
-                row.append(new_dict2)
-
-        new_dict1[j['id']] = row
-
-    with open("todo_all_employees.json",  "w") as f:
-
-        json_obj = json.dumps(new_dict1)
-        f.write(json_obj)
+    with open("todo_all_employees.json", "w") as jsonfile:
+        json.dump(dir_user_tasks, jsonfile)
