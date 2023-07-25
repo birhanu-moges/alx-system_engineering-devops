@@ -1,35 +1,22 @@
 #!/usr/bin/python3
-
-"""
-Python script that exports data in the CSV format
-"""
-
-from requests import get
+"""Export to csv the information about user TODO list progress"""
+import json
+import requests
 from sys import argv
-import csv
+
 
 if __name__ == "__main__":
-    response = get('https://jsonplaceholder.typicode.com/todos/')
-    data = response.json()
+    user_id = argv[1]
 
-    row = []
-    response2 = get('https://jsonplaceholder.typicode.com/users')
-    data2 = response2.json()
+    url = "https://jsonplaceholder.typicode.com/"
+    uri_user_id = "users/{}".format(user_id)
+    uri_todos = "todos"
 
-    for i in data2:
-        if i['id'] == int(argv[1]):
-            employee = i['username']
+    user_name = requests.get(url + uri_user_id).json().get("username")
+    tasks = requests.get(url + uri_todos, params={"userId": user_id}).json()
 
-    with open(argv[1] + '.csv', 'w', newline='') as file:
-        writ = csv.writer(file, quoting=csv.QUOTE_ALL)
-
-        for i in data:
-
-            row = []
-            if i['userId'] == int(argv[1]):
-                row.append(i['userId'])
-                row.append(employee)
-                row.append(i['completed'])
-                row.append(i['title'])
-
-                writ.writerow(row)
+    with open("{}.json".format(user_id), "w", newline="") as jsonfile:
+        json.dump({user_id: [{"task": task.get("title"),
+                              "completed": task.get("completed"),
+                              "username": user_name} for task in tasks]},
+                  jsonfile)
